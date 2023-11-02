@@ -1,4 +1,4 @@
-package net.nikgub.void_tome.items.mixins;
+package net.nikgub.void_tome.mixins;
 
 import net.minecraft.Util;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -13,8 +13,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.nikgub.void_tome.VoidTomeConfig;
-import net.nikgub.void_tome.base.ModUtils;
-import net.nikgub.void_tome.items.ModItems;
+import net.nikgub.void_tome.base.VTUtils;
+import net.nikgub.void_tome.items.VTItems;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -23,6 +23,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.UUID;
 
+@SuppressWarnings("unused")
 @Mixin(ItemEntity.class)
 public abstract class ItemEntityMixin extends Entity {
     @Shadow
@@ -49,13 +50,13 @@ public abstract class ItemEntityMixin extends Entity {
         if(this.level.dimension().equals(Level.END) && this.getY() < 0
         && this.getItem().getItem().equals(Items.BOOK) &&
                 (this.getThrowingEntity() instanceof ServerPlayer serverPlayer &&
-                        (ModUtils.hasCompletedTheAdvancement(serverPlayer, new ResourceLocation("minecraft:end/kill_dragon")) || !VoidTomeConfig.COMMON.dragonLocked.get()
+                        (VTUtils.hasCompletedTheAdvancement(serverPlayer, new ResourceLocation("minecraft:end/kill_dragon")) || !VoidTomeConfig.COMMON.dragonLocked.get()
                         )
                 )
         )
         {
             this.discard();
-            serverPlayer.addItem(new ItemStack(ModItems.VOID_TOME.get()));
+            serverPlayer.addItem(new ItemStack(VTItems.VOID_TOME.get()));
         }
     }
 }
