@@ -1,4 +1,4 @@
-package net.nikgub.void_tome.items.mixins;
+package net.nikgub.void_tome.mixins;
 
 import net.minecraft.client.Minecraft;
 import org.spongepowered.asm.mixin.Mixin;

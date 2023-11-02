@@ -1,3 +1,15 @@
 {
-  "item.void_tome.void_tome": "Void Tome"
+  "item.void_tome.void_tome": "Void Tome",
+
+  "-----ATTRIBUTES------": "",
+  "attribute.generic.void_tome_damage": "Void Tome Damage",
+
+  "-----ENCHANTMENTS-----": "",
+  "enchantment.void_tome.form_of_rain": "Form Of Rain",
+  "enchantment.void_tome.form_of_glass": "Form Of Glass",
+  "enchantment.void_tome.form_of_way": "Form Of Way",
+  "enchantment.void_tome.form_of_nothing": "Form Of Nothing",
+  "enchantment.void_tome.cleansing": "Cleansing",
+  "enchantment.void_tome.darkening": "Darkening",
+  "enchantment.void_tome.devouring": "Devouring"
 }

@@ -1,12 +1,13 @@
 {
   "required": true,
-  "package": "net.nikgub.void_tome.items.mixins",
+  "package": "net.nikgub.void_tome.mixins",
   "compatibilityLevel": "JAVA_17",
   "refmap": "void_tome.refmap.json",
   "mixins": [
     "ItemEntityMixin",
-    "PlayerRendererMixin",
-    "HumanoidModelMixin"
+    "HumanoidModelMixin",
+    "ItemInHandRendererMixin",
+    "ItemRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
