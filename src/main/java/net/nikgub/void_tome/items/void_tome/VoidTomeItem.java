@@ -39,9 +39,8 @@ public class VoidTomeItem extends Item implements IClientItemExtensions, IForgeI
     }
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand){
-        //return InteractionResultHolder.success(player.getItemInHand(hand));
         if(hand == InteractionHand.OFF_HAND) return InteractionResultHolder.pass(player.getItemInHand(hand));
-        else {
+        else{
             player.startUsingItem(hand);
             return InteractionResultHolder.success(player.getItemInHand(hand));
         }
