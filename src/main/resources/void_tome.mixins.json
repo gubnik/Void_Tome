@@ -5,7 +5,6 @@
   "refmap": "void_tome.refmap.json",
   "mixins": [
     "ItemEntityMixin",
-    "HumanoidModelMixin",
     "ItemInHandRendererMixin",
     "ItemRendererMixin"
   ],

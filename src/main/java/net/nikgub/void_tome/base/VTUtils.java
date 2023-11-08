@@ -40,8 +40,7 @@ public class VTUtils {
     }
     public static void shootProjectile(Projectile projectile, LivingEntity shooter, float speed, float inaccuracy){
         assert shooter != null;
-        projectile.setOwner(shooter);
-        projectile.setPos(shooter.getX(), shooter.getEyeY() - 0.3, shooter.getZ());
+        projectile.setPos(shooter.getX(), shooter.getEyeY() - 0.2, shooter.getZ());
         projectile.shoot(shooter.getLookAngle().x, shooter.getLookAngle().y, shooter.getLookAngle().z, speed, inaccuracy);
         shooter.getLevel().addFreshEntity(projectile);
     }

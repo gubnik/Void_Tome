@@ -1,10 +1,22 @@
 {
   "item.void_tome.void_tome": "Void Tome",
 
-  "-----ATTRIBUTES------": "",
+  "------ATTRIBUTES------": "",
   "attribute.generic.void_tome_damage": "Void Tome Damage",
 
-  "-----ENCHANTMENTS-----": "",
+  "------DEATH MESSAGES------": "",
+  "death.attack.void_tome": "%1$s embraced the void",
+  "death.attack.void_tome.player": "%1$s was consumed by the %2$s's void",
+  "death.attack.void_rain": "%1$s got pierced with cosmic rays",
+  "death.attack.void_rain.player": "%1$s fell pray to %2$s's cosmic rays",
+  "death.attack.void_glass": "%1$s have shattered into innumerable pieces",
+  "death.attack.void_glass.player": "%1$s have shattered into innumerable pieces by %2$s",
+  "death.attack.void_star": "%1$s was never found",
+  "death.attack.void_star.player": "%1$s's thread of prophecy was severed by %2$s",
+  "death.attack.void_nothing": "%1$s have never existed",
+  "death.attack.void_nothing.player": "%1$s have been detained by %2$s. Await your sentence at the end of Time.",
+
+  "------ENCHANTMENTS-----": "",
   "enchantment.void_tome.form_of_rain": "Form Of Rain",
   "enchantment.void_tome.form_of_glass": "Form Of Glass",
   "enchantment.void_tome.form_of_way": "Form Of Way",

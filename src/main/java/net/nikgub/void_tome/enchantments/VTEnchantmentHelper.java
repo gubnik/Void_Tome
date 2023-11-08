@@ -1,6 +1,9 @@
 package net.nikgub.void_tome.enchantments;
 
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -13,7 +16,6 @@ import net.nikgub.void_tome.base.VTDamageSource;
 import net.nikgub.void_tome.base.VTUtils;
 import net.nikgub.void_tome.entities.VTEntities;
 import net.nikgub.void_tome.entities.VoidBeamEntity;
-import net.nikgub.void_tome.entities.VoidTomeDefaultProjectile;
 import net.nikgub.void_tome.mob_effects.VTMobEffects;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.NotNull;
@@ -24,6 +26,19 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.BiConsumer;
 
 public class VTEnchantmentHelper {
+    private static void emptyForm(LivingEntity source, ItemStack itemStack) {
+        List<Meaning> meanings = Meaning.getMeaningEnchantments(itemStack);
+        Vec3 traced = VTUtils.traceUntil(source, ((vec3, level) -> {
+            level.addParticle(ParticleTypes.DRAGON_BREATH, vec3.x, vec3.y, vec3.z, 0, 0, 0);
+        }), 10);
+        List<? extends LivingEntity> collected = VTUtils.entityCollector(traced, 1.5f, source.level);
+        for (LivingEntity target : collected) {
+            target.hurt(VTDamageSource.VOID_TOME(source), (float) source.getAttributeValue(VTAttributes.VOID_TOME_DAMAGE.get()) / 2);
+            for (Meaning meaning : meanings) {
+                meaning.getAttack().accept(source, target, itemStack);
+            }
+        }
+    }
     public static void formOfRain(LivingEntity source, ItemStack itemStack){
         if(source == null) return;
         Vec3 attackCenter = new Vec3(source.getX(), source.getY(), source.getZ());
@@ -39,6 +54,7 @@ public class VTEnchantmentHelper {
 
     }
     public static void formOfNothing(LivingEntity source, ItemStack itemStack){
+        List<VTEnchantmentHelper.Meaning> meanings = VTEnchantmentHelper.Meaning.getMeaningEnchantments(itemStack);
         double lx = source.getLookAngle().x;
         double ly = source.getLookAngle().y;
         double lz = source.getLookAngle().z;
@@ -50,6 +66,9 @@ public class VTEnchantmentHelper {
         );
         for(LivingEntity entity : VTUtils.entityCollector(new Vec3(source.getX(), source.getY() + 1.5, source.getZ()), 1.5, source.level)){
             if(!entity.is(source)){
+                for(VTEnchantmentHelper.Meaning meaning : meanings){
+                    meaning.getAttack().accept(source, entity, itemStack);
+                }
                 entity.hurt(VTDamageSource.VOID_NOTHING(source), (float) source.getAttributeValue(VTAttributes.VOID_TOME_DAMAGE.get()) / 2);
             }
         }
@@ -57,12 +76,8 @@ public class VTEnchantmentHelper {
     public enum Form{
         RAIN((VoidTomeEnchantment) VTEnchantments.FORM_OF_RAIN.get(), VTEnchantmentHelper::formOfRain, VTAnimationUtils.VOID_RAIN),
         GLASS((VoidTomeEnchantment) VTEnchantments.FORM_OF_GLASS.get(), VTEnchantmentHelper::formOfGlass, VTAnimationUtils.VOID_GLASS),
-        WAY((VoidTomeEnchantment) VTEnchantments.FORM_OF_WAY.get(), ((livingEntity, itemStack) -> {}), VTAnimationUtils.VOID_TOME),
         NOTHING((VoidTomeEnchantment) VTEnchantments.FORM_OF_NOTHING.get(), VTEnchantmentHelper::formOfNothing, VTAnimationUtils.VOID_NOTHING),
-        EMPTY(null, (livingEntity, itemStack) -> {
-            VoidTomeDefaultProjectile projectile = new VoidTomeDefaultProjectile(VTEntities.VT_DEFAULT.get(), livingEntity.level, itemStack);
-            VTUtils.shootProjectile(projectile, livingEntity, 0.4f, 0.2f);
-        }, HumanoidModel.ArmPose.EMPTY);
+        EMPTY(null, VTEnchantmentHelper::emptyForm, VTAnimationUtils.VOID_TOME);
         private final VoidTomeEnchantment vtEnchantment;
         private final HumanoidModel.ArmPose animation;
         private final BiConsumer<LivingEntity, ItemStack> attack;
@@ -74,6 +89,7 @@ public class VTEnchantmentHelper {
             this.attack = attack;
             this.animation = animation;
         }
+
         public VoidTomeEnchantment getVtEnchantment(){
             return this.vtEnchantment;
         }
@@ -98,16 +114,65 @@ public class VTEnchantmentHelper {
     }
     public enum Meaning{
         CLEANSING((VoidTomeEnchantment) VTEnchantments.CLEANSING.get(), 1, ((source, target, itemStack) -> {
-            boolean flag;
             for(MobEffectInstance effect : source.getActiveEffects()){
                 if(!effect.getEffect().isBeneficial()){
-                    source.getActiveEffects().clear();
+                    source.getActiveEffects().remove(effect);
                     source.addEffect(new MobEffectInstance(VTMobEffects.CLEANSED.get(), 120, 0));
                 }
             }
         })),
-        DARKENING((VoidTomeEnchantment) VTEnchantments.DARKENING.get(), 1, ((source, target, itemStack) -> {})),
-        DEVOURING((VoidTomeEnchantment) VTEnchantments.DEVOURING.get(), 1, ((source, target, itemStack) -> {})),
+        DARKENING((VoidTomeEnchantment) VTEnchantments.DARKENING.get(), 1, ((source, target, itemStack) -> {
+            double posX, posY, posZ;
+            Vec3 cPos;
+            List<? extends LivingEntity> collector;
+            posX = source.getX();
+            posY = source.getY();
+            posZ = source.getZ();
+            for(int i = 0; i < 90; i++){
+                for(int j = 0; j < 5; j++) {
+                    cPos = new Vec3(
+                            posX - Mth.sin((float)(Math.toRadians(source.getYRot()) + Math.toRadians(i * 4))) * j,
+                            posY,
+                            posZ + Mth.cos((float)(Math.toRadians(source.getYRot()) + Math.toRadians(i * 4))) * j
+                    );
+                    if(source.level instanceof ServerLevel level){
+                        level.sendParticles(ParticleTypes.SMOKE, cPos.x, cPos.y, cPos.z, 1, 0, 0, 0, 0);
+                    }
+                    collector = VTUtils.entityCollector(cPos, 0.1, source.level);
+                    for(LivingEntity entity : collector){
+                        if(entity.equals(source)) continue;
+                        entity.hurt(VTDamageSource.VOID_TOME(source), (float) source.getAttributeValue(VTAttributes.VOID_TOME_DAMAGE.get()) / 3);
+                        entity.setDeltaMovement(new Vec3(
+                                -Mth.sin((float)(Math.toRadians(source.getYRot()) + Math.toRadians(i * 4))) * j / 2,
+                                0.2f,
+                                Mth.cos((float)(Math.toRadians(source.getYRot()) + Math.toRadians(i * 4))) * j/ 2
+                        ));
+                    }
+                }
+            }
+        })),
+        DEVOURING((VoidTomeEnchantment) VTEnchantments.DEVOURING.get(), 1, ((source, target, itemStack) -> {
+            double dx, dy, dz;
+            double[] VALUES;
+            double MAX;
+            Vec3 direction;
+            double cx = target.getX();
+            double cy = target.getY() + 1.5;
+            double cz = target.getZ();
+            for(LivingEntity entity : VTUtils.entityCollector(new Vec3(cx, cy, cz), 4, source.level)){
+                dx = target.getX() - entity.getX();
+                dy = target.getY() - entity.getY();
+                dz = target.getZ() - entity.getZ();
+                VALUES = new double[]{Mth.abs((float)dx), Mth.abs((float)dy), Mth.abs((float)dz)};
+                MAX = Arrays.stream(VALUES).max().getAsDouble();
+                dx = dx / MAX;
+                dy = dy / MAX;
+                dz = dz / MAX;
+                direction = new Vec3(dx*1.5, dy*1.5, dz*1.5);
+                entity.setDeltaMovement(direction);
+            }
+        })),
+
         EMPTY(null, 1, ((source, target, itemStack) -> {}));
         private final VoidTomeEnchantment vtEnchantment;
         private final double damageModifier;

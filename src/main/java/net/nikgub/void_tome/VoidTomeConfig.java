@@ -19,16 +19,16 @@ public class VoidTomeConfig implements IConfigEvent {
         CLIENT = clientSpecPair.getLeft();
     }
     public final ForgeConfigSpec.ConfigValue<Boolean> dragonLocked;
-    public final ForgeConfigSpec.ConfigValue<Integer> maxUse;
+    public final ForgeConfigSpec.ConfigValue<Boolean> defaultObtaining;
     public final ForgeConfigSpec.ConfigValue<Double> screenShakeAmount;
     VoidTomeConfig(ForgeConfigSpec.Builder builder){
             builder.push("Void Tome Configuration");
         dragonLocked = builder
                 .comment("Should Void Tome be locked behind killing the Dragon?")
-                .define("Locked behind Free the End?", true);
-        maxUse = builder
-                .comment("For how many ticks can a Void Tome be continuously used?")
-                .defineInRange("Max duration of a continuous use", 400, 1, 1200);
+                .define("Locked behind Free the End", true);
+        defaultObtaining = builder
+                .comment("Can Void Tome be unlocked by a regular method?")
+                .define("Default obtaining method", true);
         screenShakeAmount = builder
                 .comment("Defines how severe is screenshake produced by Void Tome effects")
                 .defineInRange("Screenshake amount", 0.01d, 0, 1f);

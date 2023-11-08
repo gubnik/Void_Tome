@@ -16,8 +16,6 @@ public class VTEnchantments {
             () -> new VoidTomeEnchantment(Enchantment.Rarity.UNCOMMON, new EquipmentSlot[]{}, VoidTomeEnchantment.Type.FORM));
     public static RegistryObject<Enchantment> FORM_OF_GLASS = ENCHANTMENTS.register("form_of_glass",
             () -> new VoidTomeEnchantment(Enchantment.Rarity.UNCOMMON, new EquipmentSlot[]{}, VoidTomeEnchantment.Type.FORM));
-    public static RegistryObject<Enchantment> FORM_OF_WAY = ENCHANTMENTS.register("form_of_way",
-            () -> new VoidTomeEnchantment(Enchantment.Rarity.UNCOMMON, new EquipmentSlot[]{}, VoidTomeEnchantment.Type.FORM));
     public static RegistryObject<Enchantment> FORM_OF_NOTHING = ENCHANTMENTS.register("form_of_nothing",
             () -> new VoidTomeEnchantment(Enchantment.Rarity.VERY_RARE, new EquipmentSlot[]{}, VoidTomeEnchantment.Type.FORM){
                 @Override

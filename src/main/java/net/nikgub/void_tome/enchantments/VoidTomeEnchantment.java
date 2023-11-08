@@ -29,7 +29,7 @@ public class VoidTomeEnchantment extends Enchantment {
         return mutablecomponent;
     }
     protected boolean checkCompatibility(@NotNull Enchantment enchantment) {
-        return !(enchantment instanceof VoidTomeEnchantment voidTomeEnchantment && voidTomeEnchantment.type == Type.FORM) || enchantment.isCurse() || this.isCurse() || this.type == Type.MEANING;
+        return !(enchantment instanceof VoidTomeEnchantment voidTomeEnchantment && voidTomeEnchantment.type == Type.FORM) || this.isCurse() || this.type == Type.MEANING;
     }
     @Override
     public int getMaxLevel(){ return 1;}
