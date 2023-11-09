@@ -152,6 +152,7 @@ public class VTEnchantmentHelper {
             }
         })),
         DEVOURING((VoidTomeEnchantment) VTEnchantments.DEVOURING.get(), 1, ((source, target, itemStack) -> {
+            if(target.isDeadOrDying()) return;
             double dx, dy, dz;
             double[] VALUES;
             double MAX;

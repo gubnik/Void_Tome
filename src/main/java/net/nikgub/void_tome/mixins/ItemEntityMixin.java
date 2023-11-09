@@ -29,25 +29,13 @@ import java.util.UUID;
 @Mixin(ItemEntity.class)
 public abstract class ItemEntityMixin extends Entity {
     @Shadow
-    private UUID thrower;
+    public abstract Entity getThrowingEntity();
     @Shadow
-    public UUID getThrower() {
-        return this.thrower;
-    }
-    @Shadow
-    public Entity getThrowingEntity() {
-        return Util.mapNullable(this.getThrower(), this.level::getPlayerByUUID);
-    }
-    @Shadow
-    private static final EntityDataAccessor<ItemStack> DATA_ITEM = SynchedEntityData.defineId(ItemEntity.class, EntityDataSerializers.ITEM_STACK);
-    @Shadow
-    public ItemStack getItem() {
-        return this.getEntityData().get(DATA_ITEM);
-    }
+    public abstract ItemStack getItem();
     public ItemEntityMixin(EntityType<?> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
-    @Inject(method = "Lnet/minecraft/world/entity/item/ItemEntity;tick()V", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private void tickMixin(CallbackInfo callbackInfo){
         if(this.getItem().getItem() instanceof VoidTomeItem){
             this.level.addParticle(ParticleTypes.SMOKE, this.getX(), this.getY() + 0.5D, this.getZ(), 0.0D, 0.0D, 0.0D);

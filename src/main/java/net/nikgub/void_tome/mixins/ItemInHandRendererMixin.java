@@ -28,7 +28,7 @@ public abstract class ItemInHandRendererMixin {
     public abstract void renderItem(LivingEntity p_109323_, ItemStack p_109324_, ItemTransforms.TransformType p_109325_, boolean p_109326_, PoseStack p_109327_, MultiBufferSource p_109328_, int p_109329_);
     @Shadow
     public abstract void applyItemArmTransform(PoseStack poseStack, HumanoidArm arm, float f);
-    @Inject(method = "Lnet/minecraft/client/renderer/ItemInHandRenderer;renderItem(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/client/renderer/block/model/ItemTransforms$TransformType;ZLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V",
+    @Inject(method = "renderItem",
     at = @At("TAIL"), cancellable = true)
     public void renderItemMixin(LivingEntity livingEntity, ItemStack itemStack, ItemTransforms.TransformType transformType, boolean b, PoseStack poseStack, MultiBufferSource multiBufferSource, int i,
                            CallbackInfo callbackInfo) {
@@ -43,7 +43,7 @@ public abstract class ItemInHandRendererMixin {
             }
         }
     }
-    @Inject(method = "Lnet/minecraft/client/renderer/ItemInHandRenderer;renderArmWithItem(Lnet/minecraft/client/player/AbstractClientPlayer;FFLnet/minecraft/world/InteractionHand;FLnet/minecraft/world/item/ItemStack;FLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V",
+    @Inject(method = "renderArmWithItem",
     at = @At("HEAD"), cancellable = true)
     private void renderArmWithItemMixin(AbstractClientPlayer player, float v, float v1, InteractionHand hand, float v2, ItemStack itemStack, float v3, PoseStack poseStack, MultiBufferSource multiBufferSource, int i1,
                                    CallbackInfo callbackInfo) {

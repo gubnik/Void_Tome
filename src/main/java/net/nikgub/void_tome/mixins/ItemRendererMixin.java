@@ -25,7 +25,7 @@ public class ItemRendererMixin {
     public void renderModelLists(BakedModel p_115190_, ItemStack p_115191_, int p_115192_, int p_115193_, PoseStack p_115194_, VertexConsumer p_115195_){}
     @Shadow
     private ItemColors itemColors;
-    @Inject(method = "Lnet/minecraft/client/renderer/entity/ItemRenderer;render(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/client/renderer/block/model/ItemTransforms$TransformType;ZLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IILnet/minecraft/client/resources/model/BakedModel;)V",
+    @Inject(method = "render",
             at = @At("HEAD"), cancellable = true)
     private void renderCustomizer(ItemStack itemStack, ItemTransforms.TransformType transformType, boolean b, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j, BakedModel bakedModel, CallbackInfo callbackInfo){
         if(itemStack.getItem() == Items.DIAMOND_SWORD && itemStack.getOrCreateTag().getBoolean("VTRender")){
@@ -38,7 +38,7 @@ public class ItemRendererMixin {
             callbackInfo.cancel();
         }
     }
-    @Inject(method = "Lnet/minecraft/client/renderer/entity/ItemRenderer;renderQuadList(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;Ljava/util/List;Lnet/minecraft/world/item/ItemStack;II)V",
+    @Inject(method = "renderQuadList",
             at = @At("HEAD"), cancellable = true)
     public void renderQuadList(PoseStack poseStack, VertexConsumer vertexConsumer, List<BakedQuad> bakedQuads, ItemStack itemStack, int p_115167_, int p_115168_, CallbackInfo callbackInfo){
         if(itemStack.getItem() == Items.GOLDEN_SWORD && itemStack.getOrCreateTag().getBoolean("VTRender")) {

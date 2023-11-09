@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
@@ -22,6 +23,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
@@ -97,6 +99,7 @@ public class VoidTomeMod {
                 meaning.getAttack().accept(player, event.getEntity(), player.getMainHandItem());
             }
         }
+
     }
     @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ModEvents {
@@ -138,6 +141,17 @@ public class VoidTomeMod {
     }
     @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
     public static class ClientForgeEvents {
+        @SubscribeEvent
+        public static void playerRenderEvent(RenderPlayerEvent event){
+            Player player = event.getEntity();
+            if(player.isUsingItem() && player.getUseItem().getItem() instanceof VoidTomeItem voidTomeItem &&
+            VTEnchantmentHelper.Form.getFormFromEnchantment(VTEnchantmentHelper.Form.getFormEnchantment(player.getUseItem())) == VTEnchantmentHelper.Form.NOTHING) {
+                player.level.addParticle(ParticleTypes.SMOKE, player.getX(), player.getY(), player.getZ(), 0, 0, 0);
+                player.level.addParticle(ParticleTypes.DRAGON_BREATH, player.getX(), player.getY(), player.getZ(), 0, 0, 0);
+                player.level.addParticle(ParticleTypes.PORTAL, player.getX(), player.getY(), player.getZ(), 0, 0, 0);
+                event.setCanceled(event.isCancelable());
+            }
+        }
         @SubscribeEvent
         public static void tooltipLineEvent(ItemTooltipEvent event) {
             if(!(event.getItemStack().getItem() instanceof VoidTomeItem voidTomeItem)) return;

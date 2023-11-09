@@ -51,7 +51,7 @@ public class VoidTomeItem extends Item implements IClientItemExtensions, IForgeI
     public int getUseDuration(@NotNull ItemStack itemStack){
         return switch (VTEnchantmentHelper.Form.getFormFromEnchantment(VTEnchantmentHelper.Form.getFormEnchantment(itemStack))){
             case GLASS -> 80;
-            case NOTHING -> 60;
+            case NOTHING -> 20;
             default -> 72000;
         };
     }
