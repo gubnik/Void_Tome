@@ -2,6 +2,7 @@ package net.nikgub.void_tome.entities;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -46,7 +47,7 @@ public class AttackEffectEntity extends Entity {
         this.entityData.set(PLAYER_UUID, Optional.of(player.getUUID()));
     }
     public Player getOwner(){
-        return (this.entityData.get(PLAYER_UUID).isEmpty()) ? null : this.level.getPlayerByUUID(this.entityData.get(PLAYER_UUID).get());
+        return (this.entityData.get(PLAYER_UUID).isEmpty()) ? null : this.level().getPlayerByUUID(this.entityData.get(PLAYER_UUID).get());
     }
     @Override
     protected void defineSynchedData(){
@@ -69,14 +70,14 @@ public class AttackEffectEntity extends Entity {
         tag.putFloat("size", this.getSize());
     }
     @Override
-    public @NotNull Packet<?> getAddEntityPacket() {
+    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
         return new ClientboundAddEntityPacket(this);
     }
     @Override
     public void tick(){
         if(this.tickCount > lifetime) this.remove(Entity.RemovalReason.DISCARDED);
         if(this.getDoFollowPlayer() && this.getPlayerUuid() != null){
-            Player player = this.level.getPlayerByUUID(this.getPlayerUuid());
+            Player player = this.level().getPlayerByUUID(this.getPlayerUuid());
             assert player != null;
             this.moveTo(player.getX(), player.getY(), player.getZ());
         }

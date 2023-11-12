@@ -4,7 +4,7 @@
       "tick": "Lnet/minecraft/world/entity/item/ItemEntity;m_8119_()V"
     },
     "net/nikgub/void_tome/mixins/ItemInHandRendererMixin": {
-      "renderItem": "Lnet/minecraft/client/renderer/ItemInHandRenderer;m_109322_(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/client/renderer/block/model/ItemTransforms$TransformType;ZLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V",
+      "renderItem": "Lnet/minecraft/client/renderer/ItemInHandRenderer;m_269530_(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemDisplayContext;ZLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V",
       "renderArmWithItem": "Lnet/minecraft/client/renderer/ItemInHandRenderer;m_109371_(Lnet/minecraft/client/player/AbstractClientPlayer;FFLnet/minecraft/world/InteractionHand;FLnet/minecraft/world/item/ItemStack;FLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V"
     },
     "net/nikgub/void_tome/mixins/ItemRendererMixin": {
@@ -20,7 +20,7 @@
         "getThrowingEntity": "Lnet/minecraft/world/entity/item/ItemEntity;m_238333_()Lnet/minecraft/world/entity/Entity;"
       },
       "net/nikgub/void_tome/mixins/ItemInHandRendererMixin": {
-        "renderItem": "Lnet/minecraft/client/renderer/ItemInHandRenderer;m_109322_(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/client/renderer/block/model/ItemTransforms$TransformType;ZLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V",
+        "renderItem": "Lnet/minecraft/client/renderer/ItemInHandRenderer;m_269530_(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemDisplayContext;ZLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V",
         "renderArmWithItem": "Lnet/minecraft/client/renderer/ItemInHandRenderer;m_109371_(Lnet/minecraft/client/player/AbstractClientPlayer;FFLnet/minecraft/world/InteractionHand;FLnet/minecraft/world/item/ItemStack;FLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V"
       },
       "net/nikgub/void_tome/mixins/ItemRendererMixin": {

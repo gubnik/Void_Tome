@@ -1,9 +1,11 @@
 package net.nikgub.void_tome.enchantments;
 
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -12,6 +14,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.phys.Vec3;
 import net.nikgub.void_tome.base.VTAttributes;
 import net.nikgub.void_tome.base.VTDamageSource;
+import net.nikgub.void_tome.base.VTDamageTypes;
 import net.nikgub.void_tome.base.VTUtils;
 import net.nikgub.void_tome.entities.VTEntities;
 import net.nikgub.void_tome.entities.VoidBeamEntity;
@@ -31,9 +34,10 @@ public class VTEnchantmentHelper {
         Vec3 traced = VTUtils.traceUntil(source, ((vec3, level) -> {
             level.addParticle(ParticleTypes.DRAGON_BREATH, vec3.x, vec3.y, vec3.z, 0, 0, 0);
         }), 10);
-        List<? extends LivingEntity> collected = VTUtils.entityCollector(traced, 1.5f, source.level);
+        DamageSource damageSource = VTDamageSource.VOID_TOME(source);
+        List<? extends LivingEntity> collected = VTUtils.entityCollector(traced, 1.5f, source.level());
         for (LivingEntity target : collected) {
-            target.hurt(VTDamageSource.VOID_TOME(source), (float) source.getAttributeValue(VTAttributes.VOID_TOME_DAMAGE.get()) / 2);
+            target.hurt(damageSource, (float) source.getAttributeValue(VTAttributes.VOID_TOME_DAMAGE.get()) / 2);
             for (Meaning meaning : meanings) {
                 meaning.getAttack().accept(source, target, itemStack);
             }
@@ -43,11 +47,11 @@ public class VTEnchantmentHelper {
         if(source == null) return;
         Vec3 attackCenter = new Vec3(source.getX(), source.getY(), source.getZ());
         for(int i = 0; i < 3; i ++){
-            VoidBeamEntity voidBeam = new VoidBeamEntity(VTEntities.VOID_BEAM.get(), source.level, itemStack);
+            VoidBeamEntity voidBeam = new VoidBeamEntity(VTEntities.VOID_BEAM.get(), source.level(), itemStack);
             if(source instanceof Player player) voidBeam.setOwner(player);
             voidBeam.setPos(attackCenter.x + ThreadLocalRandom.current().nextDouble(-8, 8),
-                    VTUtils.findGround(attackCenter, source.level).y, attackCenter.z + ThreadLocalRandom.current().nextDouble(-8, 8));
-            source.level.addFreshEntity(voidBeam);
+                    VTUtils.findGround(attackCenter, source.level()).y, attackCenter.z + ThreadLocalRandom.current().nextDouble(-8, 8));
+            source.level().addFreshEntity(voidBeam);
         }
     }
     public static void formOfGlass(LivingEntity source, ItemStack itemStack){
@@ -59,17 +63,18 @@ public class VTEnchantmentHelper {
         double ly = source.getLookAngle().y;
         double lz = source.getLookAngle().z;
         double k = 1.2f;
+        DamageSource damageSource = VTDamageSource.VOID_NOTHING(source);
         source.setDeltaMovement(
                 lx * k,
                 ly * 0.1 * k,
                 lz * k
         );
-        for(LivingEntity entity : VTUtils.entityCollector(new Vec3(source.getX(), source.getY() + 1.5, source.getZ()), 1.5, source.level)){
+        for(LivingEntity entity : VTUtils.entityCollector(new Vec3(source.getX(), source.getY() + 1.5, source.getZ()), 1.5, source.level())){
             if(!entity.is(source)){
                 for(VTEnchantmentHelper.Meaning meaning : meanings){
                     meaning.getAttack().accept(source, entity, itemStack);
                 }
-                entity.hurt(VTDamageSource.VOID_NOTHING(source), (float) source.getAttributeValue(VTAttributes.VOID_TOME_DAMAGE.get()) / 2);
+                entity.hurt(damageSource, (float) source.getAttributeValue(VTAttributes.VOID_TOME_DAMAGE.get()) / 2);
             }
         }
     }
@@ -126,8 +131,9 @@ public class VTEnchantmentHelper {
             Vec3 cPos;
             List<? extends LivingEntity> collector;
             posX = source.getX();
-            posY = source.getY();
+            posY = source.getY() + 1;
             posZ = source.getZ();
+            DamageSource damageSource = VTDamageSource.VOID_TOME(source);
             for(int i = 0; i < 60; i++){
                 for(int j = 0; j < 5; j++) {
                     cPos = new Vec3(
@@ -135,13 +141,13 @@ public class VTEnchantmentHelper {
                             posY,
                             posZ + Mth.cos((float)(Math.toRadians(source.getYRot()) + Math.toRadians(i * 6))) * j
                     );
-                    if(source.level instanceof ServerLevel level){
+                    if(source.level() instanceof ServerLevel level){
                         level.sendParticles(ParticleTypes.SMOKE, cPos.x, cPos.y, cPos.z, 1, 0, 0, 0, 0);
                     }
-                    collector = VTUtils.entityCollector(cPos, 0.3, source.level);
+                    collector = VTUtils.entityCollector(cPos, 0.3, source.level());
                     for(LivingEntity entity : collector){
                         if(entity.equals(source)) continue;
-                        entity.hurt(VTDamageSource.VOID_TOME(source), (float) source.getAttributeValue(VTAttributes.VOID_TOME_DAMAGE.get()) / 3);
+                        entity.hurt(damageSource, (float) source.getAttributeValue(VTAttributes.VOID_TOME_DAMAGE.get()) / 3);
                         entity.setDeltaMovement(new Vec3(
                                 -Mth.sin((float)(Math.toRadians(source.getYRot()) + Math.toRadians(i * 4))) * j / 2,
                                 0.2f,
@@ -160,7 +166,7 @@ public class VTEnchantmentHelper {
             double cx = target.getX();
             double cy = target.getY() + 1.5;
             double cz = target.getZ();
-            for(LivingEntity entity : VTUtils.entityCollector(new Vec3(cx, cy, cz), 4, source.level)){
+            for(LivingEntity entity : VTUtils.entityCollector(new Vec3(cx, cy, cz), 4, source.level())){
                 dx = target.getX() - entity.getX();
                 dy = target.getY() - entity.getY();
                 dz = target.getZ() - entity.getZ();

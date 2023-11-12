@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import org.spongepowered.asm.mixin.Mixin;
@@ -27,7 +28,7 @@ public class ItemRendererMixin {
     private ItemColors itemColors;
     @Inject(method = "render",
             at = @At("HEAD"), cancellable = true)
-    private void renderCustomizer(ItemStack itemStack, ItemTransforms.TransformType transformType, boolean b, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j, BakedModel bakedModel, CallbackInfo callbackInfo){
+    private void renderCustomizer(ItemStack itemStack, ItemDisplayContext transformType, boolean b, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j, BakedModel bakedModel, CallbackInfo callbackInfo){
         if(itemStack.getItem() == Items.DIAMOND_SWORD && itemStack.getOrCreateTag().getBoolean("VTRender")){
             bakedModel = net.minecraftforge.client.ForgeHooksClient.handleCameraTransforms(poseStack, bakedModel, transformType, b);
             poseStack.translate(-0.5D, -0.5D, -0.5D);
