@@ -27,7 +27,7 @@ dependencies {
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 
-version = '1.0.3'
+version = '1.0.3-1.20.1'
 group = 'net.nikgub.void_tome'
 archivesBaseName = 'void_tome'
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
@@ -104,7 +104,7 @@ jar {
     manifest {
         attributes([
                 "Specification-Title"     : "void_tome",
-                "Specification-Vendor"    : "void_tomesareus",
+                "Specification-Vendor"    : "nikgub",
                 "Specification-Version"   : "1",
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.jar.archiveVersion,
