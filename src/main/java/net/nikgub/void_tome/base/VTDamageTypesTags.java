@@ -18,6 +18,6 @@ public class VTDamageTypesTags extends TagsProvider<DamageType> {
 
     @Override
     protected void addTags(HolderLookup.Provider p_256380_) {
-        tag(DamageTypeTags.IS_PROJECTILE).addOptional(VTDamageTypes.DAMAGE_TYPES.location());
+        tag(DamageTypeTags.IS_PROJECTILE).addOptional(VTDamageTypes.VOID_TOME_RK.location());
     }
 }

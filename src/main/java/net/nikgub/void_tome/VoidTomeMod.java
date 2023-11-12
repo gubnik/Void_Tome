@@ -25,6 +25,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
@@ -143,6 +144,18 @@ public class VoidTomeMod {
         public static void tabBuilder(BuildCreativeModeTabContentsEvent event){
             if(event.getTabKey().equals(CreativeModeTabs.COMBAT)){
                 event.accept(new ItemStack(VTItems.VOID_TOME.get()));
+            }
+            if(event.getTabKey().equals(CreativeModeTabs.INGREDIENTS)){
+                for(VTEnchantmentHelper.Form form : VTEnchantmentHelper.Form.values()){
+                    ItemStack itemStack = new ItemStack(Items.ENCHANTED_BOOK);
+                    itemStack.enchant(form.getVtEnchantment(), 1);
+                    event.accept(itemStack);
+                }
+                for(VTEnchantmentHelper.Meaning meaning : VTEnchantmentHelper.Meaning.values()){
+                    ItemStack itemStack = new ItemStack(Items.ENCHANTED_BOOK);
+                    itemStack.enchant(meaning.getVtEnchantment(), 1);
+                    event.accept(itemStack);
+                }
             }
         }
         @SubscribeEvent
