@@ -1,9 +1,7 @@
 package net.nikgub.void_tome.enchantments;
 
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -14,8 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.phys.Vec3;
 import net.nikgub.void_tome.base.VTAttributes;
-import net.nikgub.void_tome.base.VTDamageSource;
-import net.nikgub.void_tome.base.VTDamageTypes;
+import net.nikgub.void_tome.damage.VTDamageSource;
 import net.nikgub.void_tome.base.VTUtils;
 import net.nikgub.void_tome.entities.VTEntities;
 import net.nikgub.void_tome.entities.VoidBeamEntity;
@@ -35,7 +32,7 @@ public class VTEnchantmentHelper {
         Vec3 traced = VTUtils.traceUntil(source, ((vec3, level) -> {
             level.addParticle(ParticleTypes.DRAGON_BREATH, vec3.x, vec3.y, vec3.z, 0, 0, 0);
         }), 10);
-        DamageSource damageSource = new DamageSource(source.level().registryAccess().registry(Registries.DAMAGE_TYPE).get().getHolderOrThrow(VTDamageTypes.VOID_TOME_RK), source);;
+        DamageSource damageSource = VTDamageSource.VOID_TOME(source);
         List<? extends LivingEntity> collected = VTUtils.entityCollector(traced, 1.5f, source.level());
         for (LivingEntity target : collected) {
             target.hurt(damageSource, (float) source.getAttributeValue(VTAttributes.VOID_TOME_DAMAGE.get()) / 2);

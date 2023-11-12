@@ -1,14 +1,12 @@
 package net.nikgub.void_tome.entities;
 
-import net.minecraft.core.Holder;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.nikgub.void_tome.base.VTDamageSource;
-import net.nikgub.void_tome.base.VTDamageTypes;
+import net.nikgub.void_tome.damage.VTDamageSource;
 import net.nikgub.void_tome.base.VTUtils;
 import net.nikgub.void_tome.enchantments.VTEnchantmentHelper;
 import org.jetbrains.annotations.Nullable;
