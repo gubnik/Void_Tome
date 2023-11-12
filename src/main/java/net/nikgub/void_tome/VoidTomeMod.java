@@ -11,16 +11,12 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
@@ -92,8 +88,8 @@ public class VoidTomeMod {
         }
         if (event.getSource().getEntity() instanceof Player player
         && player.getMainHandItem().getItem() instanceof VoidTomeItem
-        && VTEnchantmentHelper.Form.getFormFromEnchantment(VTEnchantmentHelper.Form.getFormEnchantment(player.getMainHandItem())) == VTEnchantmentHelper.Form.GLASS) {
-            player.level.playSound(player,  new BlockPos(new Vec3(player.getX(), player.getY(), player.getZ())), SoundEvents.GLASS_BREAK, SoundSource.PLAYERS, 1f, 0.4f);
+        && VTEnchantmentHelper.Form.getFormFromEnchantment(VTEnchantmentHelper.Form.getFormEnchantment(player.getMainHandItem())) == VTEnchantmentHelper.Form.GLASS
+        && !event.getSource().isProjectile()) {
             event.setAmount((float) player.getAttributeValue(VTAttributes.VOID_TOME_DAMAGE.get()));
             for(VTEnchantmentHelper.Meaning meaning : VTEnchantmentHelper.Meaning.getMeaningEnchantments(player.getMainHandItem())){
                 meaning.getAttack().accept(player, event.getEntity(), player.getMainHandItem());

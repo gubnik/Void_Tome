@@ -31,7 +31,7 @@ public class CleansedEffect extends MobEffect {
     protected CleansedEffect() {
         super(MobEffectCategory.HARMFUL, VTUtils.rgbToColorInteger(20, 10, 180));
         for(Attribute attribute : ATTRIBUTES) {
-            this.addAttributeModifier(attribute, "Cleansed modifier", -0.5, AttributeModifier.Operation.MULTIPLY_TOTAL);
+            this.addAttributeModifier(attribute, "Cleansed modifier", -0.2, AttributeModifier.Operation.MULTIPLY_TOTAL);
         }
     }
     @Override

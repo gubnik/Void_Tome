@@ -5,7 +5,9 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -29,10 +31,8 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 public class VoidTomeItem extends Item implements IClientItemExtensions, IForgeItem {
-    public static UUID BASE_DAMAGE = BASE_ATTACK_DAMAGE_UUID;
     public static UUID BASE_SPEED = BASE_ATTACK_SPEED_UUID;
     public static int DAMAGE = 6;
-    private Multimap<Attribute, AttributeModifier> modifiers = ArrayListMultimap.create();
     public VoidTomeItem(Properties properties) {
         super(properties);
 
@@ -55,7 +55,7 @@ public class VoidTomeItem extends Item implements IClientItemExtensions, IForgeI
             default -> 72000;
         };
     }
-    public ItemStack finishUsingItem(ItemStack itemStack, Level level, LivingEntity livingEntity) {
+    public @NotNull ItemStack finishUsingItem(@NotNull ItemStack itemStack, @NotNull Level level, @NotNull LivingEntity livingEntity) {
         this.releaseUsing(itemStack, level, livingEntity, 0);
         return itemStack;
     }
@@ -78,17 +78,41 @@ public class VoidTomeItem extends Item implements IClientItemExtensions, IForgeI
     public void onUseTick(@NotNull Level level, @NotNull LivingEntity livingEntity, @NotNull ItemStack itemStack, int tick) {
         VTEnchantmentHelper.Form form;
         form = VTEnchantmentHelper.Form.getFormFromEnchantment(VTEnchantmentHelper.Form.getFormEnchantment(itemStack));
-        //int icd = 1;
-        int icd = switch (form){
-            case GLASS -> 10;
-            default -> 1;
-        };
-        if(tick % icd == 0) form.getAttack().accept(livingEntity, itemStack);
+        form.getAttack().accept(livingEntity, itemStack);
     }
     public void initializeClient(@NotNull Consumer<IClientItemExtensions> consumer) {
         consumer.accept(new VTClientExtension());
     }
-    private static class VTClientExtension implements IClientItemExtensions{
+    public static class VTClientExtension implements IClientItemExtensions{
+        public static HumanoidModel.ArmPose VOID_TOME = HumanoidModel.ArmPose.create("void_tome", false, (model, entity, arm) -> {
+            int tick;
+            if(entity instanceof Player player) tick = player.getUseItemRemainingTicks();
+            else return;
+            if(tick <= 0) return;
+            ModelPart armPart = (arm.equals(HumanoidArm.RIGHT)) ? model.rightArm : model.leftArm;
+            armPart.xRot = -1 * Mth.cos( (float) Math.PI * tick * 9 / 180) / 2 + model.head.xRot - (float) Math.PI / 2;
+            armPart.zRot = Mth.cos( (float) Math.PI * tick * 9 / 180);
+        });
+        public static HumanoidModel.ArmPose VOID_RAIN = HumanoidModel.ArmPose.create("void_rain", false, (model, entity, arm) -> {
+            int tick;
+            if(entity instanceof Player player) tick = player.getUseItemRemainingTicks();
+            else return;
+            if(tick <= 0) return;
+            ModelPart armPart = (arm.equals(HumanoidArm.RIGHT)) ? model.rightArm : model.leftArm;
+            armPart.xRot = (float) Math.PI - Mth.sin( (float) Math.PI * tick * 9 / 180) * -1 * Mth.cos( (float) Math.PI * tick * 9 / 180);
+            armPart.zRot = -1 * Mth.cos( (float) Math.PI * tick * 9 / 180) / 5;
+        });
+        public static HumanoidModel.ArmPose VOID_GLASS = HumanoidModel.ArmPose.create("void_glass", false, (model, entity, arm) -> {
+            int tick;
+            if(entity instanceof Player player) tick = player.getUseItemRemainingTicks();
+            else return;
+            if(tick <= 0) return;
+            ModelPart armPart = (arm.equals(HumanoidArm.RIGHT)) ? model.rightArm : model.leftArm;
+            armPart.xRot = Mth.cos( (float) Math.PI * tick * 18 / 180)  + model.head.xRot - (float) Math.PI / 2;
+            armPart.zRot = Mth.cos( (float) Math.PI * tick * 18 / 180);
+        });
+        public static HumanoidModel.ArmPose VOID_NOTHING = HumanoidModel.ArmPose.create("void_nothing", false, (model, entity, arm) -> {
+        });
         @Override
         public HumanoidModel.ArmPose getArmPose(LivingEntity entityLiving, InteractionHand hand, ItemStack itemStack) {
             return VTEnchantmentHelper.Form.getFormFromEnchantment(VTEnchantmentHelper.Form.getFormEnchantment(itemStack)).getAnimation();
