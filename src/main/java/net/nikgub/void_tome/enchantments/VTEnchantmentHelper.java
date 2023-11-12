@@ -10,12 +10,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.phys.Vec3;
-import net.nikgub.void_tome.animation.VTAnimationUtils;
 import net.nikgub.void_tome.base.VTAttributes;
 import net.nikgub.void_tome.base.VTDamageSource;
 import net.nikgub.void_tome.base.VTUtils;
 import net.nikgub.void_tome.entities.VTEntities;
 import net.nikgub.void_tome.entities.VoidBeamEntity;
+import net.nikgub.void_tome.items.void_tome.VoidTomeItem;
 import net.nikgub.void_tome.mob_effects.VTMobEffects;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.NotNull;
@@ -74,10 +74,10 @@ public class VTEnchantmentHelper {
         }
     }
     public enum Form{
-        RAIN((VoidTomeEnchantment) VTEnchantments.FORM_OF_RAIN.get(), VTEnchantmentHelper::formOfRain, VTAnimationUtils.VOID_RAIN),
-        GLASS((VoidTomeEnchantment) VTEnchantments.FORM_OF_GLASS.get(), VTEnchantmentHelper::formOfGlass, VTAnimationUtils.VOID_GLASS),
-        NOTHING((VoidTomeEnchantment) VTEnchantments.FORM_OF_NOTHING.get(), VTEnchantmentHelper::formOfNothing, VTAnimationUtils.VOID_NOTHING),
-        EMPTY(null, VTEnchantmentHelper::emptyForm, VTAnimationUtils.VOID_TOME);
+        RAIN((VoidTomeEnchantment) VTEnchantments.FORM_OF_RAIN.get(), VTEnchantmentHelper::formOfRain, VoidTomeItem.VTClientExtension.VOID_RAIN),
+        GLASS((VoidTomeEnchantment) VTEnchantments.FORM_OF_GLASS.get(), VTEnchantmentHelper::formOfGlass, VoidTomeItem.VTClientExtension.VOID_GLASS),
+        NOTHING((VoidTomeEnchantment) VTEnchantments.FORM_OF_NOTHING.get(), VTEnchantmentHelper::formOfNothing, VoidTomeItem.VTClientExtension.VOID_NOTHING),
+        EMPTY(null, VTEnchantmentHelper::emptyForm, VoidTomeItem.VTClientExtension.VOID_TOME);
         private final VoidTomeEnchantment vtEnchantment;
         private final HumanoidModel.ArmPose animation;
         private final BiConsumer<LivingEntity, ItemStack> attack;
@@ -114,10 +114,10 @@ public class VTEnchantmentHelper {
     }
     public enum Meaning{
         CLEANSING((VoidTomeEnchantment) VTEnchantments.CLEANSING.get(), 1, ((source, target, itemStack) -> {
-            for(MobEffectInstance effect : source.getActiveEffects()){
+            for(MobEffectInstance effect : target.getActiveEffects()){
                 if(!effect.getEffect().isBeneficial()){
-                    source.getActiveEffects().remove(effect);
-                    source.addEffect(new MobEffectInstance(VTMobEffects.CLEANSED.get(), 120, 0));
+                    target.getActiveEffects().remove(effect);
+                    target.addEffect(new MobEffectInstance(VTMobEffects.CLEANSED.get(), 120, 0));
                 }
             }
         })),
@@ -128,17 +128,17 @@ public class VTEnchantmentHelper {
             posX = source.getX();
             posY = source.getY();
             posZ = source.getZ();
-            for(int i = 0; i < 90; i++){
+            for(int i = 0; i < 60; i++){
                 for(int j = 0; j < 5; j++) {
                     cPos = new Vec3(
-                            posX - Mth.sin((float)(Math.toRadians(source.getYRot()) + Math.toRadians(i * 4))) * j,
+                            posX - Mth.sin((float)(Math.toRadians(source.getYRot()) + Math.toRadians(i * 6))) * j,
                             posY,
-                            posZ + Mth.cos((float)(Math.toRadians(source.getYRot()) + Math.toRadians(i * 4))) * j
+                            posZ + Mth.cos((float)(Math.toRadians(source.getYRot()) + Math.toRadians(i * 6))) * j
                     );
                     if(source.level instanceof ServerLevel level){
                         level.sendParticles(ParticleTypes.SMOKE, cPos.x, cPos.y, cPos.z, 1, 0, 0, 0, 0);
                     }
-                    collector = VTUtils.entityCollector(cPos, 0.1, source.level);
+                    collector = VTUtils.entityCollector(cPos, 0.3, source.level);
                     for(LivingEntity entity : collector){
                         if(entity.equals(source)) continue;
                         entity.hurt(VTDamageSource.VOID_TOME(source), (float) source.getAttributeValue(VTAttributes.VOID_TOME_DAMAGE.get()) / 3);
