@@ -1,5 +1,6 @@
 {
   "item.void_tome.void_tome": "Void Tome",
+  "itemGroup.void_tome": "Void Tome",
 
   "------ATTRIBUTES------": "",
   "attribute.generic.void_tome_damage": "Void Tome Damage",
