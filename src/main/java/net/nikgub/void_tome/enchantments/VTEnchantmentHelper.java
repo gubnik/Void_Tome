@@ -64,7 +64,7 @@ public class VTEnchantmentHelper {
                 ly * 0.1 * k,
                 lz * k
         );
-        for(LivingEntity entity : VTUtils.entityCollector(new Vec3(source.getX(), source.getY() + 1.5, source.getZ()), 1.5, source.level)){
+        for(LivingEntity entity : VTUtils.entityCollector(new Vec3(source.getX(), source.getY() + 1.5, source.getZ()), 1, source.level)){
             if(!entity.is(source)){
                 for(VTEnchantmentHelper.Meaning meaning : meanings){
                     meaning.getAttack().accept(source, entity, itemStack);
@@ -164,6 +164,7 @@ public class VTEnchantmentHelper {
                 dx = target.getX() - entity.getX();
                 dy = target.getY() - entity.getY();
                 dz = target.getZ() - entity.getZ();
+                if(dx == 0 && dy == 0 && dz == 0) continue;
                 VALUES = new double[]{Mth.abs((float)dx), Mth.abs((float)dy), Mth.abs((float)dz)};
                 MAX = Arrays.stream(VALUES).max().getAsDouble();
                 dx = dx / MAX;

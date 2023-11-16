@@ -86,7 +86,7 @@ public class VoidTomeMod {
                 && player.getUseItem().getItem() instanceof VoidTomeItem) {
             event.setAmount(event.getAmount() * 2);
         }
-        if (event.getSource().getEntity() instanceof Player player
+        if (event.getSource().getEntity() instanceof Player player && !player.isCreative()
         && player.getMainHandItem().getItem() instanceof VoidTomeItem
         && VTEnchantmentHelper.Form.getFormFromEnchantment(VTEnchantmentHelper.Form.getFormEnchantment(player.getMainHandItem())) == VTEnchantmentHelper.Form.GLASS
         && !event.getSource().isProjectile()) {
