@@ -1,0 +1,28 @@
+{
+  "item.void_tome.void_tome": "Том пустоты",
+  "itemGroup.void_tome": "Void Tome",
+
+  "------ATTRIBUTES------": "",
+  "attribute.generic.void_tome_damage": "Урон пустоты",
+
+  "------DEATH MESSAGES------": "",
+  "death.attack.void_tome": "%1$s принял пустоту",
+  "death.attack.void_tome.player": "%1$s был поглощен пустотой %2$s",
+  "death.attack.void_rain": "%1$s стал жертвой космической радиации",
+  "death.attack.void_rain.player": "%2$s отправил %1$s в микроволновку",
+  "death.attack.void_glass": "%1$s разбился на бесчисленные кусочки",
+  "death.attack.void_glass.player": "%1$s был разбит на бесчисленные кусочки %2$s",
+  "death.attack.void_star": "%1$s потерян в веках",
+  "death.attack.void_star.player": "Со смертью персонажа %1$s нить судьбы %2$s прерывается",
+  "death.attack.void_nothing": "%1$s никогда не существовал",
+  "death.attack.void_nothing.player": "%1$s задержан игроком %2$s. Ожидайте своего приговора в конце Времени.",
+
+  "------ENCHANTMENTS-----": "",
+  "enchantment.void_tome.form_of_rain": "Форма дождя",
+  "enchantment.void_tome.form_of_glass": "Форма стекла",
+  "enchantment.void_tome.form_of_way": "Форма пути",
+  "enchantment.void_tome.form_of_nothing": "Форма ничего",
+  "enchantment.void_tome.cleansing": "Очищение",
+  "enchantment.void_tome.darkening": "Тьма",
+  "enchantment.void_tome.devouring": "Пожирание"
+}

@@ -1,0 +1,28 @@
+{
+  "item.void_tome.void_tome": "Томъ пустоты ",
+  "itemGroup.void_tome": "Void Tome",
+
+  "------ATTRIBUTES------": "",
+  "attribute.generic.void_tome_damage": "Уронъ пустоты ",
+
+  "------DEATH MESSAGES------": "",
+  "death.attack.void_tome": "%1$s усталъ отъ бренности бытія",
+  "death.attack.void_tome.player": "%1$s впалъ въ уныніе отъ черноты души %2$s",
+  "death.attack.void_rain": "%1$s померъ, на то воля небесная",
+  "death.attack.void_rain.player": "%1$s заклеванъ страшными соколами стрѣльца %2$s",
+  "death.attack.void_glass": "%1$s развалился какъ пень трухлявый",
+  "death.attack.void_glass.player": "%1$s былъ разбитъ на безчисленные кусочки %2$s",
+  "death.attack.void_star": "%1$s уведенъ въ болота",
+  "death.attack.void_star.player": "%2$s размоталъ клубочекъ %1$s",
+  "death.attack.void_nothing": "%1$s? Не знаемъ такихъ",
+  "death.attack.void_nothing.player": "%1$s приведен к Императорскому суду рабом Божьим %2$s, позже приговорен к ссылке в Сибирь",
+
+  "------ENCHANTMENTS-----": "",
+  "enchantment.void_tome.form_of_rain": "Форма дождя",
+  "enchantment.void_tome.form_of_glass": "Форма стекла",
+  "enchantment.void_tome.form_of_way": "Форма пути",
+  "enchantment.void_tome.form_of_nothing": "Форма ничего",
+  "enchantment.void_tome.cleansing": "Очищеніе",
+  "enchantment.void_tome.darkening": "Тьма",
+  "enchantment.void_tome.devouring": "Пожираніе"
+}
