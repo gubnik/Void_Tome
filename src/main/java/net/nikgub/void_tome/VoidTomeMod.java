@@ -130,18 +130,6 @@ public class VoidTomeMod {
             if(event.getTabKey().equals(CreativeModeTabs.COMBAT)){
                 event.accept(new ItemStack(VTItems.VOID_TOME.get()));
             }
-            if(event.getTabKey().equals(CreativeModeTabs.INGREDIENTS)){
-                for(VTEnchantmentHelper.Form form : VTEnchantmentHelper.Form.values()){
-                    ItemStack itemStack = new ItemStack(Items.ENCHANTED_BOOK);
-                    itemStack.enchant(form.getVtEnchantment(), 1);
-                    event.accept(itemStack);
-                }
-                for(VTEnchantmentHelper.Meaning meaning : VTEnchantmentHelper.Meaning.values()){
-                    ItemStack itemStack = new ItemStack(Items.ENCHANTED_BOOK);
-                    itemStack.enchant(meaning.getVtEnchantment(), 1);
-                    event.accept(itemStack);
-                }
-            }
         }
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
