@@ -11,12 +11,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.PackOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -24,15 +19,11 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -46,8 +37,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.nikgub.void_tome.base.VTAttributes;
-import net.nikgub.void_tome.damage.VTDamageTypes;
-import net.nikgub.void_tome.damage.VTDamageTypesTags;
 import net.nikgub.void_tome.enchantments.VTEnchantmentHelper;
 import net.nikgub.void_tome.enchantments.VTEnchantments;
 import net.nikgub.void_tome.entities.VTEntities;
@@ -61,8 +50,6 @@ import org.slf4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
 import static net.minecraft.world.item.ItemStack.ATTRIBUTE_MODIFIER_FORMAT;
@@ -108,7 +95,7 @@ public class VoidTomeMod {
         if (event.getSource().getEntity() instanceof Player player
         && player.getMainHandItem().getItem() instanceof VoidTomeItem
         && VTEnchantmentHelper.Form.getFormFromEnchantment(VTEnchantmentHelper.Form.getFormEnchantment(player.getMainHandItem())) == VTEnchantmentHelper.Form.GLASS) {
-            event.setAmount((float) player.getAttributeValue(VTAttributes.VOID_TOME_DAMAGE.get()));
+            event.setAmount((float) player.getAttributeValue(VTAttributes.VOID_TOME_DAMAGE.get()) * player.getAttackStrengthScale(0));
             for(VTEnchantmentHelper.Meaning meaning : VTEnchantmentHelper.Meaning.getMeaningEnchantments(player.getMainHandItem())){
                 meaning.getAttack().accept(player, event.getEntity(), player.getMainHandItem());
             }
