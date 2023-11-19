@@ -151,10 +151,11 @@ public class VoidTomeMod {
         @SubscribeEvent
         public static void tooltipLineEvent(ItemTooltipEvent event) {
             if(!(event.getItemStack().getItem() instanceof VoidTomeItem voidTomeItem)) return;
+            String searchLine = Component.translatable("attribute.generic.void_tome_damage").getString();
             List<Component> forModification = List.copyOf(event.getToolTip());
             List<Component> forDeletion = new ArrayList<>();
             for (Component component : forModification) {
-                if (component.getString().contains("Void Tome Damage") && component.getString().contains("+")) {
+                if (component.getString().contains(searchLine) && component.getString().contains("+")) {
                     forDeletion.add(component);
                     event.getToolTip().add(Component.literal(" ")
                             .append(Component.translatable("attribute.modifier.equals." + 0,
