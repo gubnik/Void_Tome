@@ -24,6 +24,7 @@ import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -86,16 +87,15 @@ public class VoidTomeMod {
                 && player.getUseItem().getItem() instanceof VoidTomeItem) {
             event.setAmount(event.getAmount() * 2);
         }
-        if (event.getSource().getEntity() instanceof Player player && !player.isCreative()
+        if (event.getSource().getEntity() instanceof Player player
         && player.getMainHandItem().getItem() instanceof VoidTomeItem
         && VTEnchantmentHelper.Form.getFormFromEnchantment(VTEnchantmentHelper.Form.getFormEnchantment(player.getMainHandItem())) == VTEnchantmentHelper.Form.GLASS
         && !event.getSource().isProjectile()) {
-            event.setAmount((float) player.getAttributeValue(VTAttributes.VOID_TOME_DAMAGE.get()));
+            event.setAmount((float) player.getAttributeValue(VTAttributes.VOID_TOME_DAMAGE.get()) * player.getAttackStrengthScale(0));
             for(VTEnchantmentHelper.Meaning meaning : VTEnchantmentHelper.Meaning.getMeaningEnchantments(player.getMainHandItem())){
                 meaning.getAttack().accept(player, event.getEntity(), player.getMainHandItem());
             }
         }
-
     }
     @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ModEvents {
