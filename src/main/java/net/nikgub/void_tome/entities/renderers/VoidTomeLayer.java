@@ -16,8 +16,8 @@ import net.nikgub.void_tome.items.void_tome.VoidTomeItem;
 import org.jetbrains.annotations.NotNull;
 
 public class VoidTomeLayer <T extends LivingEntity, M extends HumanoidModel<T>> extends RenderLayer<T, M> {
-    public static float INFLATION = 1.25F;
-    public static ResourceLocation VOID_LAYER = new ResourceLocation("minecraft:textures/entities/player/wide/steve.png");
+    public static float INFLATION = 1.15F;
+    public static ResourceLocation VOID_LAYER = new ResourceLocation("minecraft:textures/entity/player/wide/steve.png");
 
     public VoidTomeLayer(RenderLayerParent<T, M> owner) {
         super(owner);
