@@ -37,6 +37,9 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.nikgub.void_tome.base.VTAttributes;
+import net.nikgub.void_tome.base.VTUtils;
+import net.nikgub.void_tome.damage.VTDamageSource;
+import net.nikgub.void_tome.damage.VTDamageTypes;
 import net.nikgub.void_tome.enchantments.VTEnchantmentHelper;
 import net.nikgub.void_tome.enchantments.VTEnchantments;
 import net.nikgub.void_tome.entities.VTEntities;
@@ -94,7 +97,8 @@ public class VoidTomeMod {
         }
         if (event.getSource().getEntity() instanceof Player player
         && player.getMainHandItem().getItem() instanceof VoidTomeItem
-        && VTEnchantmentHelper.Form.getFormFromEnchantment(VTEnchantmentHelper.Form.getFormEnchantment(player.getMainHandItem())) == VTEnchantmentHelper.Form.GLASS) {
+        && VTEnchantmentHelper.Form.getFormFromEnchantment(VTEnchantmentHelper.Form.getFormEnchantment(player.getMainHandItem())) == VTEnchantmentHelper.Form.GLASS
+        && !VTUtils.isDamageType(event.getSource(), VTDamageTypes.VOID_TOME_RK)) {
             event.setAmount((float) player.getAttributeValue(VTAttributes.VOID_TOME_DAMAGE.get()) * player.getAttackStrengthScale(0));
             for(VTEnchantmentHelper.Meaning meaning : VTEnchantmentHelper.Meaning.getMeaningEnchantments(player.getMainHandItem())){
                 meaning.getAttack().accept(player, event.getEntity(), player.getMainHandItem());
