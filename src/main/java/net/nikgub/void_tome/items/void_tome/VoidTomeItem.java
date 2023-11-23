@@ -69,7 +69,7 @@ public class VoidTomeItem extends Item implements IClientItemExtensions, IForgeI
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(VTAttributes.VOID_TOME_DAMAGE.get(), new AttributeModifier(VTAttributes.BASE_VOID_TOME_DAMAGE_UUID, "Weapon modifier", DAMAGE, AttributeModifier.Operation.ADDITION));
         if(VTEnchantmentHelper.Form.getFormFromEnchantment(VTEnchantmentHelper.Form.getFormEnchantment(itemStack)) == VTEnchantmentHelper.Form.GLASS){
-            builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(VoidTomeItem.BASE_SPEED, "Weapon modifier", -2.4d, AttributeModifier.Operation.ADDITION));
+            builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(VoidTomeItem.BASE_SPEED, "Weapon modifier", -2d, AttributeModifier.Operation.ADDITION));
         }
         return slot == EquipmentSlot.MAINHAND ? builder.build() : super.getDefaultAttributeModifiers(slot);
     }
