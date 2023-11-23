@@ -64,7 +64,7 @@ public class VTEnchantmentHelper {
         DamageSource damageSource = VTDamageSource.VOID_NOTHING(source);
         source.setDeltaMovement(
                 lx * k,
-                ly * 0.1 * k,
+                ly * 0.25 * k,
                 lz * k
         );
         for(LivingEntity entity : VTUtils.entityCollector(new Vec3(source.getX(), source.getY() + 1.5, source.getZ()), 1.5, source.level())){
@@ -72,7 +72,7 @@ public class VTEnchantmentHelper {
                 for(VTEnchantmentHelper.Meaning meaning : meanings){
                     meaning.getAttack().accept(source, entity, itemStack);
                 }
-                entity.hurt(damageSource, (float) source.getAttributeValue(VTAttributes.VOID_TOME_DAMAGE.get()) / 2);
+                entity.hurt(damageSource, (float) source.getAttributeValue(VTAttributes.VOID_TOME_DAMAGE.get()) / 1.5f);
             }
         }
     }
