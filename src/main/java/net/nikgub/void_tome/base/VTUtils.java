@@ -2,8 +2,11 @@ package net.nikgub.void_tome.base;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
@@ -18,6 +21,9 @@ import java.util.function.BiConsumer;
 
 @SuppressWarnings("unused")
 public class VTUtils {
+    public static boolean isDamageType(DamageSource damageSource, ResourceKey<DamageType> damageTypeKey){
+        return damageSource.getMsgId().equals(damageTypeKey.location().getNamespace());
+    }
     public static boolean hasCompletedTheAdvancement(ServerPlayer serverPlayer, ResourceLocation advancement){
         return serverPlayer.getAdvancements()
                 .getOrStartProgress(Objects.requireNonNull(
